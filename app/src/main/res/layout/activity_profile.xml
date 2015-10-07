@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.nicholasesposito.courseapp.profileActivity"
+    android:background="#e9fbe5">
+
+    <ImageView
+        android:layout_width="500dp"
+        android:layout_height="170dp"
+        android:src="@drawable/androidimg"
+        android:scaleType="centerCrop"
+        android:id="@+id/image_banner"
+        />
+    <ImageView
+        android:layout_width="100dp"
+        android:id="@+id/imgPr"
+        android:layout_height="100dp"
+        android:src="@drawable/and"
+        android:layout_below="@id/image_banner"
+        android:layout_marginTop="-50dp"
+        android:layout_marginLeft="25dp" />
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Nicholas A. Esposito"
+    android:textStyle="bold"
+    android:textSize="18dp"
+    android:layout_alignBottom="@+id/imgPr"
+    android:layout_toRightOf="@+id/imgPr"
+    android:layout_toEndOf="@+id/imgPr"
+    android:layout_marginLeft="46dp"
+    android:layout_marginStart="46dp" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/git"
+        android:src="@drawable/git"
+        android:layout_below="@id/imgPr"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="25dp"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Niko88"
+        android:layout_toRightOf="@id/git"
+        android:layout_below="@id/imgPr"
+        android:layout_marginTop="45dp"
+        android:layout_marginLeft="20dp"
+        android:textSize="17dp"
+        android:textStyle="bold"/>
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/location"
+        android:layout_below="@id/git"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="25dp"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Bath, UK"
+        android:layout_toRightOf="@id/git"
+        android:layout_below="@id/imgPr"
+        android:layout_marginTop="115dp"
+        android:layout_marginLeft="20dp"
+        android:textSize="17dp"
+        android:textStyle="bold"/>
+</RelativeLayout>

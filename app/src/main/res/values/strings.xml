@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">CourseApp</string>
+    <string name="true_button">True</string>
+    <string name="false_button">false</string>
+</resources>
