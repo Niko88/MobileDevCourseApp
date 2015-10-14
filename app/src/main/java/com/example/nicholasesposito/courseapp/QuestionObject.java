@@ -6,10 +6,10 @@ package com.example.nicholasesposito.courseapp;
 public class QuestionObject {
 
     private String question;
-    private int picture;
+    private String picture;
     private boolean answer;
 
-    public QuestionObject(String question, boolean answer, int picture)
+    public QuestionObject(String question, boolean answer, String picture)
     {
         this.answer = answer;
         this.question = question;
@@ -24,11 +24,11 @@ public class QuestionObject {
         this.question = question;
     }
 
-    public int getPicture() {
+    public String getPicture() {
         return picture;
     }
 
-    public void setPicture(int picture) {
+    public void setPicture(String picture) {
         this.picture = picture;
     }
 

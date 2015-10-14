@@ -11,6 +11,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -75,16 +77,16 @@ public class MainActivity extends AppCompatActivity {
     private void generateQuestions(){
 
         questions = new ArrayList<>();
-        questions.add(new QuestionObject("is the capital of England London?", true, R.drawable.london));
-        questions.add(new QuestionObject("is Egypt in France?", false, R.drawable.egypt));
-        questions.add(new QuestionObject("is Bath college in Bristol?", false, R.drawable.college));
-        questions.add(new QuestionObject("is the Royal crescent in Bath?", true, R.drawable.crescent));
-        questions.add(new QuestionObject("is Rome in Italy?", true, R.drawable.rome));
-        questions.add(new QuestionObject("is there a statue of liberty in France?", true, R.drawable.parisliberty));
-        questions.add(new QuestionObject("is the tour eiffel in New York?", false, R.drawable.newyork));
-        questions.add(new QuestionObject("is the Duomo in Milan?", true, R.drawable.duomo));
-        questions.add(new QuestionObject("is the earth round?", true, R.drawable.earth));
-        questions.add(new QuestionObject("is New Mexico a part of Mexico?", false, R.drawable.newmexico));
+        questions.add(new QuestionObject("is the capital of England London?", true, "http://www.coaster.co.uk/_catologue/ln68.jpg"));
+        questions.add(new QuestionObject("is Egypt in France?", false, "http://d1lalstwiwz2br.cloudfront.net/images_users/groups/4367_small.1.jpg"));
+        questions.add(new QuestionObject("is Bath college in Bristol?", false, "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xft1/v/t1.0-1/p200x200/11150424_10152805581131334_4537754421540710647_n.png?oh=2265c9efe8d526186373b58d907b9077&oe=56419969&__gda__=1447372100_56b31d9a4413ba33071de6c949836f56"));
+        questions.add(new QuestionObject("is the Royal crescent in Bath?", true, "http://www.cappuccinocards.com/media/catalog/product/cache/1/small_image/200x/9df78eab33525d08d6e5fb8d27136e95/b/a/bath_royal_crescent_sq.jpg"));
+        questions.add(new QuestionObject("is Rome in Italy?", true,"http://www.flightcentre.co.nz/global-images/product-images/holidays/rome1.jpg"));
+        questions.add(new QuestionObject("is there a statue of liberty in France?", true, "https://cms-assets.tutsplus.com/uploads/users/21/posts/19431/featured_image/CodeFeature.jpg"));
+        questions.add(new QuestionObject("is the tour eiffel in New York?", false,"https://cms-assets.tutsplus.com/uploads/users/21/posts/19431/featured_image/CodeFeature.jpg"));
+        questions.add(new QuestionObject("is the Duomo in Milan?", true, "https://cms-assets.tutsplus.com/uploads/users/21/posts/19431/featured_image/CodeFeature.jpg"));
+        questions.add(new QuestionObject("is the earth round?", true, "https://cms-assets.tutsplus.com/uploads/users/21/posts/19431/featured_image/CodeFeature.jpg"));
+        questions.add(new QuestionObject("is New Mexico a part of Mexico?", false, "https://cms-assets.tutsplus.com/uploads/users/21/posts/19431/featured_image/CodeFeature.jpg"));
     }
 
     private void setUpQuestion(){
@@ -100,7 +102,9 @@ public class MainActivity extends AppCompatActivity {
         {
             currentQuestion = questions.get(index);
             question.setText(currentQuestion.getQuestion());
-            picture.setImageResource(currentQuestion.getPicture());
+            Picasso.with(this)
+                    .load(currentQuestion.getPicture())
+                    .into(picture);
             index++;
         }
     }
@@ -130,13 +134,11 @@ public class MainActivity extends AppCompatActivity {
         super.onSaveInstanceState(savedInstanceState);
     }
 
-    private void endGame()
-    {
+    private void endGame() {
         final AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this)
                 .setTitle("Congratulations")
-                .setMessage("You scored " + score +" points this round!")
-                .setNeutralButton("ok", new DialogInterface.OnClickListener()
-                { public void onClick(DialogInterface dialog, int which){
+                .setMessage("You scored " + score + " points this round!")
+                .setNeutralButton("ok", new DialogInterface.OnClickListener() { public void onClick(DialogInterface dialog, int which){
                 //code here
 
                     finish();
