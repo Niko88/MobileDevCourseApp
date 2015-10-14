@@ -132,9 +132,16 @@ public class MainActivity extends AppCompatActivity {
 
     private void endGame()
     {
-        final AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).setTitle("Congratulations").setMessage("You scored " + score +" points this round!").setNeutralButton("ok", new DialogInterface.OnClickListener()
-        {
-            public void onClick(DialogInterface dialog, int which){}
+        final AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this)
+                .setTitle("Congratulations")
+                .setMessage("You scored " + score +" points this round!")
+                .setNeutralButton("ok", new DialogInterface.OnClickListener()
+                { public void onClick(DialogInterface dialog, int which){
+                //code here
+
+                    finish();
+
+                    }
         }).create();
 
         alertDialog.show();
