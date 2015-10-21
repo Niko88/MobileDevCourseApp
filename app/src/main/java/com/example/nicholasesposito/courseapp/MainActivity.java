@@ -3,6 +3,7 @@ package com.example.nicholasesposito.courseapp;
 import android.animation.AnimatorSet;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
@@ -20,6 +21,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Handler;
 
 import io.paperdb.Paper;
 
@@ -37,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String KEY_INDEX = "index";
     private static final String SCORE_VALUE = "score";
     private String m_Text = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -119,20 +122,25 @@ public class MainActivity extends AppCompatActivity {
     private void determineButtonPress(boolean answer)
     {
         boolean expectedAnswer = currentQuestion.isAnswer();
+        final Toast toast = Toast.makeText(MainActivity.this, "Correct!", Toast.LENGTH_SHORT);
+        final Toast toast1 = Toast.makeText(MainActivity.this, "Incorrect!",Toast.LENGTH_SHORT);
 
         if(answer == expectedAnswer)
         {
-            Toast.makeText(MainActivity.this, "Correct!",Toast.LENGTH_SHORT).show();
+            toast.show();
             score ++;
             scoreView.setText(String.format("Score = %d", score));
         }
         else
         {
-            Toast.makeText(MainActivity.this,"Incorrect!",Toast.LENGTH_SHORT).show();
+
+            toast1.show();
+
         }
 
         setUpQuestion();
-
+        toast.cancel();
+        toast1.cancel();
         Paper.init(this);
     }
 
@@ -143,17 +151,16 @@ public class MainActivity extends AppCompatActivity {
         super.onSaveInstanceState(savedInstanceState);
     }
 
-    //final EditText input = new EditText(this);
-
     private void endGame() {
+        final EditText input = new EditText(MainActivity.this);
         final AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this)
                 .setTitle("Congratulations")
                 .setMessage("You scored " + score + " points this round!")
-                //.setView(input)
+                .setView(input)
                 .setPositiveButton("ok", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
 
-                                //m_Text = input.getText().toString();
+                                m_Text = input.getText().toString();
 
                                 //new high score
 
@@ -165,18 +172,22 @@ public class MainActivity extends AppCompatActivity {
                                 //add item
                                 highScores.add(highScore);
 
+                                Toast.makeText(MainActivity.this, "Thanks "+m_Text,Toast.LENGTH_SHORT).show();
+
                                 finish();
                             }
                         }
 
                 )
-               // .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
-                 //   public void onClick(DialogInterface dialog, int whichButton) {
-                   //     dialog.cancel();
-                    //}
-                //})
+               .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                           public void onClick(DialogInterface dialog, int whichButton) {
+                               finish();
+                           }
+                       }
+               )
                 .create();
 
         alertDialog.show();
     }
+
 }

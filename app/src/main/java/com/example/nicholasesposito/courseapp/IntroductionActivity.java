@@ -16,6 +16,7 @@ public class IntroductionActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_introduction);
+
         btnAbout = (Button) findViewById(R.id.aboutButton);
         btnAbout.setOnClickListener(new View.OnClickListener() {
             @Override
