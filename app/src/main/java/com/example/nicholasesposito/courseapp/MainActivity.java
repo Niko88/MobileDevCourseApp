@@ -25,6 +25,7 @@ import java.util.logging.Handler;
 
 import io.paperdb.Paper;
 
+
 public class MainActivity extends AppCompatActivity {
 
     private TextView question;
@@ -87,16 +88,16 @@ public class MainActivity extends AppCompatActivity {
     private void generateQuestions(){
 
         questions = new ArrayList<>();
-        questions.add(new QuestionObject("is the capital of England London?", true, "http://www.coaster.co.uk/_catologue/ln68.jpg"));
-        questions.add(new QuestionObject("is Egypt in France?", false, "http://d1lalstwiwz2br.cloudfront.net/images_users/groups/4367_small.1.jpg"));
+        questions.add(new QuestionObject("is the capital of England London?", true, "http://pictures.solardestinations.com/images/packages/unitedkingdom/London-HousesoftheParliament.jpg"));
+        questions.add(new QuestionObject("is Egypt in France?", false, "http://www.hdwallpapersnew.net/wp-content/uploads/2015/10/awesome-france-wide-hd-wallpaper-images-full-free-200x200.jpg"));
         questions.add(new QuestionObject("is Bath college in Bristol?", false, "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xft1/v/t1.0-1/p200x200/11150424_10152805581131334_4537754421540710647_n.png?oh=2265c9efe8d526186373b58d907b9077&oe=56419969&__gda__=1447372100_56b31d9a4413ba33071de6c949836f56"));
         questions.add(new QuestionObject("is the Royal crescent in Bath?", true, "http://www.cappuccinocards.com/media/catalog/product/cache/1/small_image/200x/9df78eab33525d08d6e5fb8d27136e95/b/a/bath_royal_crescent_sq.jpg"));
         questions.add(new QuestionObject("is Rome in Italy?", true, "http://www.flightcentre.co.nz/global-images/product-images/holidays/rome1.jpg"));
-        questions.add(new QuestionObject("is there a statue of liberty in France?", true, "https://cms-assets.tutsplus.com/uploads/users/21/posts/19431/featured_image/CodeFeature.jpg"));
-        questions.add(new QuestionObject("is the tour eiffel in New York?", false, "https://cms-assets.tutsplus.com/uploads/users/21/posts/19431/featured_image/CodeFeature.jpg"));
-        questions.add(new QuestionObject("is the Duomo in Milan?", true, "https://cms-assets.tutsplus.com/uploads/users/21/posts/19431/featured_image/CodeFeature.jpg"));
-        questions.add(new QuestionObject("is the earth round?", true, "https://cms-assets.tutsplus.com/uploads/users/21/posts/19431/featured_image/CodeFeature.jpg"));
-        questions.add(new QuestionObject("is New Mexico a part of Mexico?", false, "https://cms-assets.tutsplus.com/uploads/users/21/posts/19431/featured_image/CodeFeature.jpg"));
+        questions.add(new QuestionObject("is there a statue of liberty in France?", true, "http://1.bp.blogspot.com/-ZKzJmyoxwm8/VaPZ1Xf6coI/AAAAAAAAAM0/jFfkXlLpqZ4/s200-c/130th%2BAnniversary%2Bof%2BFrance%2Bdelivering%2Bthe%2BStatue%2Bof%2BLiberty%2Bto%2Bthe%2BUnited%2BStates.jpg"));
+        questions.add(new QuestionObject("is the tour eiffel in New York?", false, "http://cache.graphicslib.viator.com/graphicslib/2312/SITours/new-york-lights-night-tour-in-new-york-city-1.jpg"));
+        questions.add(new QuestionObject("is the Duomo in Milan?", true, "http://jto.s3.amazonaws.com/wp-content/uploads/2015/05/z8-sp-expomilano1-b-20150501-200x200.jpg"));
+        questions.add(new QuestionObject("is the earth round?", true, "http://rationalwiki.org/w/images/thumb/2/2f/Flat_earth.png/200px-Flat_earth.png"));
+        questions.add(new QuestionObject("is New Mexico a part of Mexico?", false, "http://www.mainstreetroswell.org/wpdocs/wp-content/uploads/2015/04/NMMS_Logo-Converted-.png"));
     }
 
     private void setUpQuestion(){
@@ -171,6 +172,9 @@ public class MainActivity extends AppCompatActivity {
 
                                 //add item
                                 highScores.add(highScore);
+
+                                Paper.book().write("highScores", highScores);
+
 
                                 Toast.makeText(MainActivity.this, "Thanks "+m_Text,Toast.LENGTH_SHORT).show();
 

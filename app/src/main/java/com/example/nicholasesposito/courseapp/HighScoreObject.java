@@ -9,6 +9,30 @@ public class HighScoreObject
     private Integer score;
     private long timestamp;
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public long getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public Integer getScore() {
+        return score;
+    }
+
+    public void setScore(Integer score) {
+        this.score = score;
+    }
+
     public HighScoreObject(Integer scor, String nam , long timestam)
     {
         name = nam;
