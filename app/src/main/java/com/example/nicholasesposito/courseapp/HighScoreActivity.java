@@ -1,10 +1,13 @@
 package com.example.nicholasesposito.courseapp;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,6 +24,7 @@ public class HighScoreActivity extends AppCompatActivity {
     private  List<HighScoreObject> highscores;
 
     private ListView listView;
+    private Button rButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +36,7 @@ public class HighScoreActivity extends AppCompatActivity {
         HighscoreAdapter adapter = new HighscoreAdapter(highscores);
         listView.setAdapter(adapter);
     }
+
 
     private class HighscoreAdapter extends ArrayAdapter<HighScoreObject> {
 
@@ -54,7 +59,38 @@ public class HighScoreActivity extends AppCompatActivity {
             SimpleDateFormat fmtOut = new SimpleDateFormat("dd-MM-yyyy");
 
             TextView lblTitle = (TextView) convertView.findViewById(R.id.lblTitle);
-            lblTitle.setText(highscore.getScore() + " - "+ highscore.getName() + " - " + fmtOut.format(date));
+            lblTitle.setText(highscore.getScore() + " - " + highscore.getName() + " - " + fmtOut.format(date));
+            
+
+            rButton = (Button) findViewById(R.id.resbutton);
+            rButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    final AlertDialog alertDialog = new AlertDialog.Builder(HighScoreActivity.this)
+                            .setMessage("Are you sure you want to erase all data?")
+                            .setPositiveButton("yes", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int whichButton) {
+                                            Paper.book().destroy();
+                                            Toast.makeText(HighScoreActivity.this, "Data Erased", Toast.LENGTH_SHORT).show();
+                                            setContentView(R.layout.activity_high_score);
+
+                                        }
+                                    }
+
+                            )
+                            .setNegativeButton("no", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int whichButton) {
+                                        }
+                                    }
+                            )
+                            .create();
+
+                    alertDialog.show();
+
+                }
+            });
+
 
 
             return convertView;
