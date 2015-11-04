@@ -7,4 +7,11 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context="com.example.nicholasesposito.courseapp.HighScoreActivity">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="aaaa"
+        android:textSize="28dp"
+        android:id="@+id/totView"/>
+
 </RelativeLayout>

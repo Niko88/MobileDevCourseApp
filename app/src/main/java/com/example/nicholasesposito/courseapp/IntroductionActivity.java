@@ -7,6 +7,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import io.paperdb.Paper;
+
+
 public class IntroductionActivity extends AppCompatActivity {
 
     private Button btnAbout;
@@ -14,10 +20,13 @@ public class IntroductionActivity extends AppCompatActivity {
     private Button btnScores;
     private TextView txtHighScores;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_introduction);
+
+        Paper.init(this);
 
         btnAbout = (Button) findViewById(R.id.aboutButton);
         btnAbout.setOnClickListener(new View.OnClickListener() {
@@ -44,8 +53,15 @@ public class IntroductionActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
+        List<HighScoreObject> highScrs = Paper.book().read("highscores", new ArrayList<HighScoreObject>());
+        int maxScore = 0;
+        for (HighScoreObject h : highScrs){
 
+            if (h.getScore() > maxScore){
+                maxScore = h.getScore();
+            }
+        }
         txtHighScores = (TextView) findViewById(R.id.scoreLabel);
-        txtHighScores.setText("High score = %d");
+        txtHighScores.setText("High score =" + maxScore);
     }
 }

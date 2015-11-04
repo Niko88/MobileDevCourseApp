@@ -142,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
         setUpQuestion();
         toast.cancel();
         toast1.cancel();
-        Paper.init(this);
+        //Paper.init(this);
     }
 
     @Override
@@ -165,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
 
                                 //new high score
 
-                                HighScoreObject highScore = new HighScoreObject(score, "Nik", new Date().getTime());
+                                HighScoreObject highScore = new HighScoreObject(score,m_Text, new Date().getTime());
                                 //get user prefs
 
                                 List<HighScoreObject> highScores = Paper.book().read("highscores", new ArrayList<HighScoreObject>());
@@ -177,6 +177,8 @@ public class MainActivity extends AppCompatActivity {
 
 
                                 Toast.makeText(MainActivity.this, "Thanks "+m_Text,Toast.LENGTH_SHORT).show();
+
+
 
                                 finish();
                             }
