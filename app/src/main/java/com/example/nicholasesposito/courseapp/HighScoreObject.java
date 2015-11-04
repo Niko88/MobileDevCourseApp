@@ -40,4 +40,7 @@ public class HighScoreObject
         timestamp = timestam;
 
     }
+
+    public HighScoreObject()
+    {}
 }

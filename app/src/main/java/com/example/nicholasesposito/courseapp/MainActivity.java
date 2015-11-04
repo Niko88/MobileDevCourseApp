@@ -104,10 +104,9 @@ public class MainActivity extends AppCompatActivity {
 
         if (index == questions.size())
         {
-            Log.d("COURSE_APP","ended all questions");
+            Log.d("COURSE_APP", "ended all questions");
             endGame();
             index = 0;
-            score = 0;
         }
         else
         {
@@ -142,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
         setUpQuestion();
         toast.cancel();
         toast1.cancel();
-        //Paper.init(this);
+        Paper.init(this);
     }
 
     @Override
@@ -173,11 +172,12 @@ public class MainActivity extends AppCompatActivity {
                                 //add item
                                 highScores.add(highScore);
 
-                                Paper.book().write("highScores", highScores);
+                                Paper.book().write("highscores", highScores);
 
 
-                                Toast.makeText(MainActivity.this, "Thanks "+m_Text,Toast.LENGTH_SHORT).show();
+                                Toast.makeText(MainActivity.this, "Score " + score + " - " + m_Text, Toast.LENGTH_SHORT).show();
 
+                                score = 0;
 
 
                                 finish();

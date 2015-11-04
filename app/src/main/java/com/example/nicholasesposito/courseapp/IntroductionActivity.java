@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,11 +58,14 @@ public class IntroductionActivity extends AppCompatActivity {
         int maxScore = 0;
         for (HighScoreObject h : highScrs){
 
-            if (h.getScore() > maxScore){
-                maxScore = h.getScore();
-            }
-        }
+                if (h.getScore() > maxScore)
+                {
+                maxScore = h.getScore();}
+
+       }
+
+        //Toast.makeText(IntroductionActivity.this, maxScore,Toast.LENGTH_SHORT).show();
         txtHighScores = (TextView) findViewById(R.id.scoreLabel);
-        txtHighScores.setText("High score =" + maxScore);
+        txtHighScores.setText("High Score = "+maxScore);
     }
 }
