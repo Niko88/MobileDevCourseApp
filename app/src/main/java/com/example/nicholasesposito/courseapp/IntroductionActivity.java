@@ -64,8 +64,25 @@ public class IntroductionActivity extends AppCompatActivity {
 
        }
 
-        //Toast.makeText(IntroductionActivity.this, maxScore,Toast.LENGTH_SHORT).show();
+
         txtHighScores = (TextView) findViewById(R.id.scoreLabel);
         txtHighScores.setText("High Score = "+maxScore);
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        int maxScore = 0;
+        List<HighScoreObject> highScrs = Paper.book().read("highscores", new ArrayList<HighScoreObject>());
+        for (HighScoreObject h : highScrs){
+
+            if (h.getScore() > maxScore)
+            {
+                maxScore = h.getScore();}
+
+        }
+
+        txtHighScores = (TextView) findViewById(R.id.scoreLabel);
+        txtHighScores.setText("High Score = " + maxScore);
     }
 }
