@@ -16,10 +16,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.esotericsoftware.kryo.io.Input;
+import com.parse.GetCallback;
 import com.parse.Parse;
+import com.parse.ParseFile;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.squareup.picasso.Picasso;
 
+import com.parse.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -36,8 +40,11 @@ public class MainActivity extends AppCompatActivity {
     private Button buttonTrue;
     private ImageView picture;
     private int index;
-    private List<QuestionObject> questions;
-    private QuestionObject currentQuestion;
+    private List questions;
+    //private List<QuestionObject> questions;
+    //private QuestionObject currentQuestion;
+    private String currentQuestion;
+    private boolean ans;
     private int score;
     private static final String KEY_INDEX = "index";
     private static final String SCORE_VALUE = "score";
@@ -88,7 +95,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void generateQuestions(){
 
-        questions = new ArrayList<>();
+        questions = new ArrayList();
+        /*
         questions.add(new QuestionObject("is the capital of England London?", true, "http://pictures.solardestinations.com/images/packages/unitedkingdom/London-HousesoftheParliament.jpg"));
         questions.add(new QuestionObject("is Egypt in France?", false, "http://www.hdwallpapersnew.net/wp-content/uploads/2015/10/awesome-france-wide-hd-wallpaper-images-full-free-200x200.jpg"));
         questions.add(new QuestionObject("is Bath college in Bristol?", false, "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xft1/v/t1.0-1/p200x200/11150424_10152805581131334_4537754421540710647_n.png?oh=2265c9efe8d526186373b58d907b9077&oe=56419969&__gda__=1447372100_56b31d9a4413ba33071de6c949836f56"));
@@ -99,30 +107,59 @@ public class MainActivity extends AppCompatActivity {
         questions.add(new QuestionObject("is the Duomo in Milan?", true, "http://jto.s3.amazonaws.com/wp-content/uploads/2015/05/z8-sp-expomilano1-b-20150501-200x200.jpg"));
         questions.add(new QuestionObject("is the earth round?", true, "http://rationalwiki.org/w/images/thumb/2/2f/Flat_earth.png/200px-Flat_earth.png"));
         questions.add(new QuestionObject("is New Mexico a part of Mexico?", false, "http://www.mainstreetroswell.org/wpdocs/wp-content/uploads/2015/04/NMMS_Logo-Converted-.png"));
+        */
+        questions.add("zVTQfQbUsC");
+        questions.add("zjpFZYbdY8");
+        questions.add("Dh6KKCphzq");
+        questions.add("6JtqfvI87y");
+        questions.add("fZsp8lj7t0");
+        questions.add("LGqQb7gYV6");
+        questions.add("3vD4tUQAJO");
+        questions.add("zyqjNJ88eT");
+        questions.add("rJYl00zMia");
+        questions.add("aOhQkPTgqc");
+
+
     }
 
     private void setUpQuestion(){
 
         if (index == questions.size())
         {
-            Log.d("COURSE_APP", "ended all questions");
             endGame();
             index = 0;
         }
         else
         {
-            currentQuestion = questions.get(index);
+            /*currentQuestion = questions.get(index);
             question.setText(currentQuestion.getQuestion());
             Picasso.with(this)
                     .load(currentQuestion.getPicture())
-                    .into(picture);
+                    .into(picture);*/
+            //Picasso.with(this)
+                   // .load("http://pictures.solardestinations.com/images/packages/unitedkingdom/London-HousesoftheParliament.jpg")
+                    //.into(picture);
+            currentQuestion = (String) questions.get(index);
+            ParseQuery<ParseObject> query = ParseQuery.getQuery("QuestionObject");
+            query.getInBackground(currentQuestion, new GetCallback<ParseObject>() {
+                public void done(ParseObject object, ParseException e) {
+                    if (e == null) {
+                        String questionText = object.getString("question");
+                        ans = object.getBoolean("answ");
+                        question.setText(questionText);
+                    } else {
+                        // something went wrong
+                        Log.d("Parse","Error!");
+                    }
+                }
+            });
             index++;
         }
     }
 
     private void determineButtonPress(boolean answer)
     {
-        boolean expectedAnswer = currentQuestion.isAnswer();
+        boolean expectedAnswer = ans; //currentQuestion.isAnswer();
         final Toast toast = Toast.makeText(MainActivity.this, "Correct!", Toast.LENGTH_SHORT);
         final Toast toast1 = Toast.makeText(MainActivity.this, "Incorrect!",Toast.LENGTH_SHORT);
 
