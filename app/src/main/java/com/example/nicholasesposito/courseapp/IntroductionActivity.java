@@ -57,7 +57,7 @@ public class IntroductionActivity extends AppCompatActivity {
         Paper.init(this);
         Log.d("Paper","Paper initialized");
         // Enable Local Datastore.
-       /* Parse.enableLocalDatastore(this);
+        Parse.enableLocalDatastore(this);
         Log.d("Parse", "enabled local datastore");
         Parse.initialize(this, "jA008oxhWY8RuXW4tkAGwGHieRwx9A9RbDGbZIM9", "FBMpKpbSEGtbdqWlZdlRzE5pbVivix41m1OLjyl3");
         Log.d("Parse", "Parse initialized");
@@ -66,7 +66,7 @@ public class IntroductionActivity extends AppCompatActivity {
         testObject.put("foo", "bar");
         Log.d("Parse", "Object sent");
         testObject.saveInBackground();
-        Log.d("Parse", "Object saved");*/
+        Log.d("Parse", "Object saved");
 
         btnAbout = (Button) findViewById(R.id.aboutButton);
         btnAbout.setOnClickListener(new View.OnClickListener() {
