@@ -16,6 +16,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.esotericsoftware.kryo.io.Input;
+import com.parse.Parse;
+import com.parse.ParseObject;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -55,7 +57,6 @@ public class MainActivity extends AppCompatActivity {
             index = 0;
             score = 0;
         }
-
         question = (TextView) findViewById(R.id.lblQuestion);
         buttonTrue = (Button) findViewById(R.id.button_true);
         buttonFalse = (Button) findViewById(R.id.button_false);

@@ -60,7 +60,7 @@ public class HighScoreActivity extends AppCompatActivity {
 
             TextView lblTitle = (TextView) convertView.findViewById(R.id.lblTitle);
             lblTitle.setText(highscore.getScore() + " - " + highscore.getName() + " - " + fmtOut.format(date));
-            
+
 
             rButton = (Button) findViewById(R.id.resbutton);
             rButton.setOnClickListener(new View.OnClickListener() {
