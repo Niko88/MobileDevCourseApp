@@ -3,6 +3,8 @@ package com.example.nicholasesposito.courseapp;
 import android.animation.AnimatorSet;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,6 +19,7 @@ import android.widget.Toast;
 
 import com.esotericsoftware.kryo.io.Input;
 import com.parse.GetCallback;
+import com.parse.GetDataCallback;
 import com.parse.Parse;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
@@ -147,12 +150,46 @@ public class MainActivity extends AppCompatActivity {
                         String questionText = object.getString("question");
                         ans = object.getBoolean("answ");
                         question.setText(questionText);
+
+
+                        ParseFile fileObject = (ParseFile) object
+                                .get("picture");
+                        fileObject
+                                .getDataInBackground(new GetDataCallback() {
+
+                                    public void done(byte[] data,
+                                                     ParseException e) {
+                                        if (e == null) {
+                                            Log.d("test",
+                                                    "We've got data in data.");
+                                            // Decode the Byte[] into
+                                            // Bitmap
+                                            Bitmap bmp = BitmapFactory
+                                                    .decodeByteArray(
+                                                            data, 0,
+                                                            data.length);
+
+                                            // Get the ImageView from
+                                            // main.xml
+
+                                            // Set the Bitmap into the
+                                            // ImageView
+                                            picture.setImageBitmap(bmp);
+
+
+                                        } else {
+                                            Log.d("test",
+                                                    "There was a problem downloading the data.");
+                                        }
+                                    }});
                     } else {
                         // something went wrong
                         Log.d("Parse","Error!");
                     }
                 }
             });
+
+
             index++;
         }
     }
