@@ -269,51 +269,61 @@ public class MainActivity extends FragmentActivity {
                 .setTitle("Congratulations")
                 .setMessage("You scored " + score + " points this round!")
                 .setView(input)
-                .setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                .setPositiveButton("save score", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
 
                                 m_Text = input.getText().toString();
-
-                                //new high score
-
-                                HighScoreObject highScore = new HighScoreObject(score,m_Text, new Date().getTime());
-                                //get user prefs
-
-                                List<HighScoreObject> highScores = Paper.book().read("highscores", new ArrayList<HighScoreObject>());
-
-                                //add item
-                                highScores.add(highScore);
-
-                                Paper.book().write("highscores", highScores);
-
-                                score = 0;
-
-
+                                saveScore(m_Text);
                                 finish();
                             }
                         }
 
                 )
-               .setNegativeButton("share", new DialogInterface.OnClickListener() {
+               .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
                            public void onClick(DialogInterface dialog, int whichButton) {
-                               if (ShareDialog.canShow(ShareLinkContent.class)) {
-                                   ShareLinkContent linkContent = new ShareLinkContent.Builder()
-                                           .setContentTitle("Hello Facebook")
-                                           .setContentDescription(
-                                                   "The 'Hello Facebook' sample  showcases simple Facebook integration")
-                                           .setContentUrl(Uri.parse("http://developers.facebook.com/android"))
-                                           .build();
-
-                                   shareDialog.show(linkContent);
-                                   finish();
-                               }
+                               finish();
                            }
                        }
-
                )
+                .setNeutralButton("share", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                if (ShareDialog.canShow(ShareLinkContent.class)) {
+                                    ShareLinkContent linkContent = new ShareLinkContent.Builder()
+                                            .setContentTitle("My Score")
+                                            .setContentDescription(
+                                                    "I scored " + score + " points in Nik's question App!")
+                                            .setContentUrl(Uri.parse("https://github.com/Niko88/MobileDevCourseApp"))
+                                            .build();
+
+                                    shareDialog.show(linkContent);
+                                    m_Text = input.getText().toString();
+                                    saveScore(m_Text);
+                                    finish();
+                                }
+                            }
+                        }
+                )
                 .create();
 
         alertDialog.show();
+    }
+
+    public void saveScore(String m_Text)
+    {
+
+        //new high score
+
+        HighScoreObject highScore = new HighScoreObject(score,m_Text, new Date().getTime());
+        //get user prefs
+
+        List<HighScoreObject> highScores = Paper.book().read("highscores", new ArrayList<HighScoreObject>());
+
+        //add item
+        highScores.add(highScore);
+
+        Paper.book().write("highscores", highScores);
+
+        score = 0;
     }
 
 }
