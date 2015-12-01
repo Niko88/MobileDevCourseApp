@@ -2,8 +2,9 @@
     <string name="app_name">CourseApp</string>
     <string name="true_button">True</string>
     <string name="false_button">false</string>
-    <string name="welcome">Welcome to Nik\'s Questionnaire App!</string>
+    <string name="welcome">Ready for some questions?</string>
     <string name="play_button">Play!</string>
     <string name="high_scores_button">High Scores</string>
     <string name="about_button">About</string>
+    <string name="facebook_app_id">721447431323647</string>
 </resources>

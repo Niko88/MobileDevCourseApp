@@ -59,7 +59,7 @@ public class HighScoreActivity extends AppCompatActivity {
             SimpleDateFormat fmtOut = new SimpleDateFormat("dd-MM-yyyy");
 
             TextView lblTitle = (TextView) convertView.findViewById(R.id.lblTitle);
-            lblTitle.setText(highscore.getScore() + " - " + highscore.getName() + " - " + fmtOut.format(date));
+            lblTitle.setText(highscore.getName() + " scored " + highscore.getScore() + " the " + fmtOut.format(date));
 
 
             rButton = (Button) findViewById(R.id.resbutton);

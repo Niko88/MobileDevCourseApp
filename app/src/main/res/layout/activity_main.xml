@@ -4,22 +4,34 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:background="#333">
 
     <ImageView
 
         android:id="@+id/imgPicture"
         android:layout_width="200dp"
         android:layout_height="200dp"
-        android:src="#303F9F"
         android:layout_marginTop="-100dp"
         android:layout_marginBottom="30dp"
+        android:visibility="invisible"
         />
+        <ProgressBar
+            android:id="@+id/loadingPanel"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true" />
+
+
     <TextView
         tools:text="Hello World!"
         android:id="@+id/lblQuestion"
+        android:textColor="@color/white"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:textStyle="bold"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -27,24 +39,33 @@
         android:orientation="horizontal"
         android:layout_margin="16dp">
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="98dp"
             android:layout_height="wrap_content"
             android:text="@string/true_button"
-            android:id="@+id/button_true"/>
+            android:id="@+id/button_true"
+            android:elevation="2dp"
+            android:textColor="@android:color/white"
+            android:textSize="16dp"
+            android:backgroundTint="#3399ff"
+            />
         <Button
-            android:layout_width="wrap_content"
+            android:backgroundTint="#3399ff"
+            android:layout_width="98dp"
             android:layout_height="wrap_content"
             android:text="@string/false_button"
-            android:id="@+id/button_false"/>
-
+            android:textSize="16dp"
+            android:id="@+id/button_false"
+            android:elevation="2dp"
+            android:textColor="@android:color/white"/>
     </LinearLayout>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:textSize="18dp"
+        android:textSize="20dp"
         android:textStyle="bold"
         android:id="@+id/scoreViewId"
+        android:textColor="@color/white"
         android:text="Score = 0"/>
 </LinearLayout>

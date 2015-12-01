@@ -5,7 +5,11 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.CountDownTimer;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
@@ -18,6 +22,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.esotericsoftware.kryo.io.Input;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
+import com.facebook.share.model.ShareLinkContent;
+import com.facebook.share.widget.ShareDialog;
 import com.parse.GetCallback;
 import com.parse.GetDataCallback;
 import com.parse.Parse;
@@ -35,13 +44,16 @@ import java.util.logging.Handler;
 import io.paperdb.Paper;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends FragmentActivity {
 
+    CallbackManager callbackManager;
+    ShareDialog shareDialog;
     private TextView question;
     private TextView scoreView;
     private Button buttonFalse;
     private Button buttonTrue;
     private ImageView picture;
+    private RoundImage roundedImage;
     private int index;
     private List questions;
     //private List<QuestionObject> questions;
@@ -67,6 +79,10 @@ public class MainActivity extends AppCompatActivity {
             index = 0;
             score = 0;
         }
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        callbackManager = CallbackManager.Factory.create();
+        shareDialog = new ShareDialog(this);
         question = (TextView) findViewById(R.id.lblQuestion);
         buttonTrue = (Button) findViewById(R.id.button_true);
         buttonFalse = (Button) findViewById(R.id.button_false);
@@ -99,18 +115,7 @@ public class MainActivity extends AppCompatActivity {
     private void generateQuestions(){
 
         questions = new ArrayList();
-        /*
-        questions.add(new QuestionObject("is the capital of England London?", true, "http://pictures.solardestinations.com/images/packages/unitedkingdom/London-HousesoftheParliament.jpg"));
-        questions.add(new QuestionObject("is Egypt in France?", false, "http://www.hdwallpapersnew.net/wp-content/uploads/2015/10/awesome-france-wide-hd-wallpaper-images-full-free-200x200.jpg"));
-        questions.add(new QuestionObject("is Bath college in Bristol?", false, "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xft1/v/t1.0-1/p200x200/11150424_10152805581131334_4537754421540710647_n.png?oh=2265c9efe8d526186373b58d907b9077&oe=56419969&__gda__=1447372100_56b31d9a4413ba33071de6c949836f56"));
-        questions.add(new QuestionObject("is the Royal crescent in Bath?", true, "http://www.cappuccinocards.com/media/catalog/product/cache/1/small_image/200x/9df78eab33525d08d6e5fb8d27136e95/b/a/bath_royal_crescent_sq.jpg"));
-        questions.add(new QuestionObject("is Rome in Italy?", true, "http://www.flightcentre.co.nz/global-images/product-images/holidays/rome1.jpg"));
-        questions.add(new QuestionObject("is there a statue of liberty in France?", true, "http://1.bp.blogspot.com/-ZKzJmyoxwm8/VaPZ1Xf6coI/AAAAAAAAAM0/jFfkXlLpqZ4/s200-c/130th%2BAnniversary%2Bof%2BFrance%2Bdelivering%2Bthe%2BStatue%2Bof%2BLiberty%2Bto%2Bthe%2BUnited%2BStates.jpg"));
-        questions.add(new QuestionObject("is the tour eiffel in New York?", false, "http://cache.graphicslib.viator.com/graphicslib/2312/SITours/new-york-lights-night-tour-in-new-york-city-1.jpg"));
-        questions.add(new QuestionObject("is the Duomo in Milan?", true, "http://jto.s3.amazonaws.com/wp-content/uploads/2015/05/z8-sp-expomilano1-b-20150501-200x200.jpg"));
-        questions.add(new QuestionObject("is the earth round?", true, "http://rationalwiki.org/w/images/thumb/2/2f/Flat_earth.png/200px-Flat_earth.png"));
-        questions.add(new QuestionObject("is New Mexico a part of Mexico?", false, "http://www.mainstreetroswell.org/wpdocs/wp-content/uploads/2015/04/NMMS_Logo-Converted-.png"));
-        */
+
         questions.add("zVTQfQbUsC");
         questions.add("zjpFZYbdY8");
         questions.add("Dh6KKCphzq");
@@ -134,14 +139,6 @@ public class MainActivity extends AppCompatActivity {
         }
         else
         {
-            /*currentQuestion = questions.get(index);
-            question.setText(currentQuestion.getQuestion());
-            Picasso.with(this)
-                    .load(currentQuestion.getPicture())
-                    .into(picture);*/
-            //Picasso.with(this)
-                   // .load("http://pictures.solardestinations.com/images/packages/unitedkingdom/London-HousesoftheParliament.jpg")
-                    //.into(picture);
             currentQuestion = (String) questions.get(index);
             ParseQuery<ParseObject> query = ParseQuery.getQuery("QuestionObject");
             query.getInBackground(currentQuestion, new GetCallback<ParseObject>() {
@@ -174,7 +171,10 @@ public class MainActivity extends AppCompatActivity {
 
                                             // Set the Bitmap into the
                                             // ImageView
-                                            picture.setImageBitmap(bmp);
+                                            roundedImage = new RoundImage(bmp);
+                                            picture.setImageDrawable(roundedImage);
+                                            picture.setVisibility(View.VISIBLE);
+                                            findViewById(R.id.loadingPanel).setVisibility(View.GONE);;
 
 
                                         } else {
@@ -196,27 +196,50 @@ public class MainActivity extends AppCompatActivity {
 
     private void determineButtonPress(boolean answer)
     {
-        boolean expectedAnswer = ans; //currentQuestion.isAnswer();
+        final boolean Answer = answer;
+        final boolean expectedAnswer = ans; //currentQuestion.isAnswer();
         final Toast toast = Toast.makeText(MainActivity.this, "Correct!", Toast.LENGTH_SHORT);
         final Toast toast1 = Toast.makeText(MainActivity.this, "Incorrect!",Toast.LENGTH_SHORT);
 
-        if(answer == expectedAnswer)
-        {
-            toast.show();
-            score ++;
-            scoreView.setText(String.format("Score = %d", score));
-        }
-        else
-        {
+        new CountDownTimer(1100, 1000) { // 5000 = 5 sec
 
-            toast1.show();
+            public void onTick(long millisUntilFinished) {
+                buttonFalse.setVisibility(View.INVISIBLE);
+                buttonTrue.setVisibility(View.INVISIBLE);
+                question.setVisibility(View.INVISIBLE);
+                if(Answer == expectedAnswer)
+                {
+                   // toast.show();
+                    picture.setImageResource(R.drawable.ok);
+                    score ++;
+                    MediaPlayer mp = MediaPlayer.create(getApplicationContext(), R.raw.correct);
+                    mp.start();
+                    scoreView.setText(String.format("Yeah!"));
+                }
+                else
+                {
+                    picture.setImageResource(R.drawable.facepalm);
+                    scoreView.setText(String.format("BOOOOO!"));
+                    MediaPlayer mp = MediaPlayer.create(getApplicationContext(), R.raw.bo);
+                    mp.start();
+                    //toast1.show();
 
-        }
+                }
 
-        setUpQuestion();
-        toast.cancel();
-        toast1.cancel();
-        Paper.init(this);
+                //toast.cancel();
+                //toast1.cancel();
+                //Paper.init(this);
+            }
+
+            public void onFinish() {
+                buttonFalse.setVisibility(View.VISIBLE);
+                buttonTrue.setVisibility(View.VISIBLE);
+                question.setVisibility(View.VISIBLE);
+                scoreView.setText(String.format("Score = %d", score));
+                setUpQuestion();
+            }
+        }.start();
+
     }
 
     @Override
@@ -224,6 +247,20 @@ public class MainActivity extends AppCompatActivity {
         savedInstanceState.putInt(KEY_INDEX,index);
         savedInstanceState.putInt(SCORE_VALUE, score);
         super.onSaveInstanceState(savedInstanceState);
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // Logs 'install' and 'app activate' App Events.
+        AppEventsLogger.activateApp(this);
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        // Logs 'app deactivate' App Event.
+        AppEventsLogger.deactivateApp(this);
     }
 
     private void endGame() {
@@ -249,9 +286,6 @@ public class MainActivity extends AppCompatActivity {
 
                                 Paper.book().write("highscores", highScores);
 
-
-                                Toast.makeText(MainActivity.this, "Score " + score + " - " + m_Text, Toast.LENGTH_SHORT).show();
-
                                 score = 0;
 
 
@@ -260,11 +294,22 @@ public class MainActivity extends AppCompatActivity {
                         }
 
                 )
-               .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+               .setNegativeButton("share", new DialogInterface.OnClickListener() {
                            public void onClick(DialogInterface dialog, int whichButton) {
-                               finish();
+                               if (ShareDialog.canShow(ShareLinkContent.class)) {
+                                   ShareLinkContent linkContent = new ShareLinkContent.Builder()
+                                           .setContentTitle("Hello Facebook")
+                                           .setContentDescription(
+                                                   "The 'Hello Facebook' sample  showcases simple Facebook integration")
+                                           .setContentUrl(Uri.parse("http://developers.facebook.com/android"))
+                                           .build();
+
+                                   shareDialog.show(linkContent);
+                                   finish();
+                               }
                            }
                        }
+
                )
                 .create();
 

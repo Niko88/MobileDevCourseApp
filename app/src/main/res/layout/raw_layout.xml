@@ -6,9 +6,15 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="#808080"
+        android:elevation="5dp"
+        android:layout_margin="4dp"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textStyle="bold"
         android:id="@+id/lblTitle"
         android:padding="10dp"
-        android:textSize="16dp"
+        android:textSize="15dp"
         android:text="4 - Nik - 21st Oct 2015"/>
 
 </LinearLayout>
