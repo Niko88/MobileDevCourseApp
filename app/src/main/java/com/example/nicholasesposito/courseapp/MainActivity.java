@@ -38,6 +38,8 @@ import com.squareup.picasso.Picasso;
 
 import com.parse.ParseException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Handler;
@@ -276,6 +278,24 @@ public class MainActivity extends FragmentActivity {
 
         //add item
         highScores.add(highScore);
+        Collections.sort(highScores, new Comparator<HighScoreObject>()
+         {
+            public int compare(HighScoreObject a, HighScoreObject b)
+            {
+                if (a.getScore() > b.getScore())
+                {
+                    return -1;
+                }
+                else if (a.getScore() < b.getScore())
+                {
+                    return 1;
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+         });
 
         Paper.book().write("highscores", highScores);
 

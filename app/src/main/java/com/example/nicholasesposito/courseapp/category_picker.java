@@ -19,6 +19,7 @@ public class category_picker extends AppCompatActivity {
         Button Flags;
         World = (Button) findViewById(R.id.worldButton);
         Flags = (Button) findViewById(R.id.flagsButton);
+        Button back = (Button) findViewById(R.id.backButton);
 
         World.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -30,6 +31,12 @@ public class category_picker extends AppCompatActivity {
             @Override
             public void onClick(View v) {
             StartIntent("flags");
+            }
+        });
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
             }
         });
 
