@@ -61,11 +61,14 @@ public class MainActivity extends FragmentActivity {
     private static final String KEY_INDEX = "index";
     private static final String SCORE_VALUE = "score";
     private String m_Text = "";
+    private String category;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Bundle bundle = getIntent().getExtras();
+        category = bundle.getString("CATEGORY");
         if (savedInstanceState != null)
         {index = savedInstanceState.getInt(KEY_INDEX);
             score = savedInstanceState.getInt(SCORE_VALUE);
@@ -104,11 +107,12 @@ public class MainActivity extends FragmentActivity {
 
         setUpQuestion();
 
+
     }
 
     private void setUpQuestion() {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("QuestionObject");
-        query.whereEqualTo("category", "world");
+        query.whereEqualTo("category", category);
         query.findInBackground(new FindCallback<ParseObject>() {
             public void done(List<ParseObject> questionlist, ParseException e) {
                 if (e == null) {

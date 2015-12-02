@@ -83,7 +83,7 @@ public class IntroductionActivity extends AppCompatActivity {
         btnPlay.setOnClickListener(new View.OnClickListener() {//Action when user click "Play" button
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(IntroductionActivity.this, MainActivity.class);//a new intent is created to connect this view  to the main activity
+                Intent i = new Intent(IntroductionActivity.this, category_picker.class);//a new intent is created to connect this view  to the main activity
                 startActivity(i);//intent gets started
             }
         });

@@ -7,4 +7,7 @@
     <string name="high_scores_button">High Scores</string>
     <string name="about_button">About</string>
     <string name="facebook_app_id">721447431323647</string>
+    <string name="category1">World</string>
+    <string name="category2">flags</string>
+    <string name="title_activity_category_picker">category_picker</string>
 </resources>
