@@ -27,6 +27,7 @@ import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
 import com.facebook.share.model.ShareLinkContent;
 import com.facebook.share.widget.ShareDialog;
+import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.GetDataCallback;
 import com.parse.Parse;
@@ -55,10 +56,6 @@ public class MainActivity extends FragmentActivity {
     private ImageView picture;
     private RoundImage roundedImage;
     private int index;
-    private List questions;
-    //private List<QuestionObject> questions;
-    //private QuestionObject currentQuestion;
-    private String currentQuestion;
     private boolean ans;
     private int score;
     private static final String KEY_INDEX = "index";
@@ -71,15 +68,14 @@ public class MainActivity extends FragmentActivity {
         setContentView(R.layout.activity_main);
         if (savedInstanceState != null)
         {index = savedInstanceState.getInt(KEY_INDEX);
-         score = savedInstanceState.getInt(SCORE_VALUE);
-         index --;
+            score = savedInstanceState.getInt(SCORE_VALUE);
+            index --;
         }
         else
         {
             index = 0;
             score = 0;
         }
-        FacebookSdk.sdkInitialize(getApplicationContext());
         FacebookSdk.sdkInitialize(getApplicationContext());
         callbackManager = CallbackManager.Factory.create();
         shareDialog = new ShareDialog(this);
@@ -106,92 +102,55 @@ public class MainActivity extends FragmentActivity {
             }
         });
 
-        generateQuestions();
-
         setUpQuestion();
 
     }
 
-    private void generateQuestions(){
-
-        questions = new ArrayList();
-
-        questions.add("zVTQfQbUsC");
-        questions.add("zjpFZYbdY8");
-        questions.add("Dh6KKCphzq");
-        questions.add("6JtqfvI87y");
-        questions.add("fZsp8lj7t0");
-        questions.add("LGqQb7gYV6");
-        questions.add("3vD4tUQAJO");
-        questions.add("zyqjNJ88eT");
-        questions.add("rJYl00zMia");
-        questions.add("aOhQkPTgqc");
-
-
-    }
-
-    private void setUpQuestion(){
-
-        if (index == questions.size())
-        {
-            endGame();
-            index = 0;
-        }
-        else
-        {
-            currentQuestion = (String) questions.get(index);
-            ParseQuery<ParseObject> query = ParseQuery.getQuery("QuestionObject");
-            query.getInBackground(currentQuestion, new GetCallback<ParseObject>() {
-                public void done(ParseObject object, ParseException e) {
-                    if (e == null) {
-                        String questionText = object.getString("question");
-                        ans = object.getBoolean("answ");
-                        question.setText(questionText);
-
-
-                        ParseFile fileObject = (ParseFile) object
-                                .get("picture");
-                        fileObject
-                                .getDataInBackground(new GetDataCallback() {
-
-                                    public void done(byte[] data,
-                                                     ParseException e) {
-                                        if (e == null) {
-                                            Log.d("test",
-                                                    "We've got data in data.");
-                                            // Decode the Byte[] into
-                                            // Bitmap
-                                            Bitmap bmp = BitmapFactory
-                                                    .decodeByteArray(
-                                                            data, 0,
-                                                            data.length);
-
-                                            // Get the ImageView from
-                                            // main.xml
-
-                                            // Set the Bitmap into the
-                                            // ImageView
-                                            roundedImage = new RoundImage(bmp);
-                                            picture.setImageDrawable(roundedImage);
-                                            picture.setVisibility(View.VISIBLE);
-                                            findViewById(R.id.loadingPanel).setVisibility(View.GONE);;
-
-
-                                        } else {
-                                            Log.d("test",
-                                                    "There was a problem downloading the data.");
-                                        }
-                                    }});
-                    } else {
-                        // something went wrong
-                        Log.d("Parse","Error!");
-                    }
+    private void setUpQuestion() {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("QuestionObject");
+        query.whereEqualTo("category", "world");
+        query.findInBackground(new FindCallback<ParseObject>() {
+            public void done(List<ParseObject> questionlist, ParseException e) {
+                if (e == null) {
+                    if (index == questionlist.size())
+                    {  endGame();}
+                    else
+                    {
+                    Log.d("score", "Retrieved " + questionlist.size() + " questions , index " + index);
+                    String questionText = questionlist.get(index).get("question").toString();
+                    ans = (boolean) questionlist.get(index).get("answ");
+                    question.setText(questionText);
+                        question.setVisibility(View.VISIBLE);
+                        buttonFalse.setVisibility(View.VISIBLE);
+                        buttonTrue.setVisibility(View.VISIBLE);
+                        scoreView.setText(String.format("Score = %d", score));
+                    ParseFile fileObject = (ParseFile) questionlist.get(index).get("picture");
+                    fileObject.getDataInBackground(new GetDataCallback()
+                    {
+                        public void done(byte[] data, ParseException e)
+                        {
+                            if (e == null)
+                            {
+                                Bitmap bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
+                                roundedImage = new RoundImage(bmp);
+                                picture.setImageDrawable(roundedImage);
+                                picture.setVisibility(View.VISIBLE);
+                                findViewById(R.id.loadingPanel).setVisibility(View.GONE);
+                            }
+                            else
+                            {
+                                Log.d("test", "There was a problem downloading the data.");
+                            }
+                        }
+                    });
+                    index++;}
+                } else {
+                    Log.d("score", "Error: " + e.getMessage());
                 }
-            });
+            }
+        });
 
 
-            index++;
-        }
     }
 
     private void determineButtonPress(boolean answer)
@@ -209,7 +168,7 @@ public class MainActivity extends FragmentActivity {
                 question.setVisibility(View.INVISIBLE);
                 if(Answer == expectedAnswer)
                 {
-                   // toast.show();
+                    // toast.show();
                     picture.setImageResource(R.drawable.ok);
                     score ++;
                     MediaPlayer mp = MediaPlayer.create(getApplicationContext(), R.raw.correct);
@@ -222,20 +181,12 @@ public class MainActivity extends FragmentActivity {
                     scoreView.setText(String.format("BOOOOO!"));
                     MediaPlayer mp = MediaPlayer.create(getApplicationContext(), R.raw.bo);
                     mp.start();
-                    //toast1.show();
 
                 }
 
-                //toast.cancel();
-                //toast1.cancel();
-                //Paper.init(this);
             }
 
             public void onFinish() {
-                buttonFalse.setVisibility(View.VISIBLE);
-                buttonTrue.setVisibility(View.VISIBLE);
-                question.setVisibility(View.VISIBLE);
-                scoreView.setText(String.format("Score = %d", score));
                 setUpQuestion();
             }
         }.start();
@@ -279,12 +230,12 @@ public class MainActivity extends FragmentActivity {
                         }
 
                 )
-               .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
-                           public void onClick(DialogInterface dialog, int whichButton) {
-                               finish();
-                           }
-                       }
-               )
+                .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                finish();
+                            }
+                        }
+                )
                 .setNeutralButton("share", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 if (ShareDialog.canShow(ShareLinkContent.class)) {
@@ -312,7 +263,8 @@ public class MainActivity extends FragmentActivity {
     {
 
         //new high score
-
+        if(m_Text.length() == 0)
+        {m_Text = "anon player";}
         HighScoreObject highScore = new HighScoreObject(score,m_Text, new Date().getTime());
         //get user prefs
 
